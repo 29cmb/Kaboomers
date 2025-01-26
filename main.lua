@@ -54,6 +54,47 @@ SMODS.Enhancement {
     end
 }
 
+SMODS.Consumable {
+    key = "explosive",
+    set = "Tarot",
+    loc_txt = {
+        name = "Explosive",
+        text = {
+            "Enhances {C:gold}2{}",
+            "selected cards to",
+            "{C:red}Flaming Cards{}"
+        },
+    },
+    config = {count = 2},
+    loc_vars = function(self, info_queue, card)
+        return {vars = {card.ability.count}}
+    end,
+    can_use = function(self, card)
+        return #G.hand.highlighted <= 2 and #G.hand.highlighted > 0
+    end,
+    use = function(self, card, area, copier)
+        for i = 1, #G.hand.highlighted do --flips cards
+            local percent = 1.15 - (i-0.999)/(#G.hand.highlighted-0.998)*0.3
+            G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.15,func = function() 
+                G.hand.highlighted[i]:flip();
+                play_sound('card1', percent);
+                G.hand.highlighted[i]:juice_up(0.3, 0.3);
+                return true 
+            end}))
+        end
+        delay(0.2)
+        for i = 1, #G.hand.highlighted do --enhances cards
+            G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.1,func = function() G.hand.highlighted[i]:set_ability(G.P_CENTERS["m_kb_flaming"]);return true end }))
+        end 
+        for i = 1, #G.hand.highlighted do --unflips cards
+            local percent = 0.85 + (i-0.999)/(#G.hand.highlighted-0.998)*0.3
+            G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.15,func = function() G.hand.highlighted[i]:flip();play_sound('tarot2', percent, 0.6);G.hand.highlighted[i]:juice_up(0.3, 0.3);return true end }))
+        end
+        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2,func = function() G.hand:unhighlight_all(); return true end }))
+        delay(0.5)
+    end
+}
+
 SMODS.Joker {
     key = "kaboomer",
     loc_txt = {
@@ -68,7 +109,7 @@ SMODS.Joker {
     atlas = "kaboomers_jokers",
     soul_pos = { x = 0, y = 1 },
     rarity = 4,
-    cost = 36,
+    cost = 30,
     config = {x_mult = 1, increase = 1},
     loc_vars = function(self, info_queue, card)
         return {vars = {card.ability.increase, card.ability.x_mult}}
@@ -148,7 +189,7 @@ SMODS.Joker {
         return {vars = {card.ability.repetitions, G.GAME.probabilities.normal/card.ability.chance, card.ability.maxchance}}
     end,
     calculate = function(self, card, context)
-        if context.cardarea == G.play and context.repetition and not context.repetition_only then
+        if context.cardarea == G.play and context.repetition and not context.repetition_only and context.other_card.config.center_key == "m_kb_flaming" then
             if pseudorandom("kaboomers_green_retrigger", 1, 4) <= G.GAME.probabilities.normal then
                 card_eval_status_text(card, 'extra', nil, nil, nil, {message = "Again!"})
                 return {

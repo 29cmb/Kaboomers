@@ -1,12 +1,14 @@
 {
     "conventionalCommits.scopes": [
         "jokers",
-        "enhancement"
+        "enhancement",
+        "consumable"
     ],
     "Lua.diagnostics.globals": [
         "SMODS",
         "card_eval_status_text",
         "pseudorandom",
-        "G"
+        "G",
+        "Event"
     ]
 }

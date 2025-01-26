@@ -2,7 +2,7 @@
 	"id": "kaboomers",
 	"name": "Kaboomers",
 	"display_name": "Kaboomers",
-	"author": ["DevCmb", "Nibbl_z"],
+	"author": ["DevCmb", "Nibbl_z", "NeverrMoon"],
 	"description": "Adds a little bit of everything",
 	"prefix": "kb",
 	"main_file": "main.lua",
