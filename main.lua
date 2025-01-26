@@ -35,6 +35,9 @@ SMODS.Enhancement {
                     if v.label == "j_kb_kaboomer" then 
                         v.ability.x_mult = v.ability.x_mult + v.ability.increase
                         card_eval_status_text(v, 'extra', nil, nil, nil, {message = "X" .. v.ability.x_mult})
+                    elseif v.label == "j_kb_blue_kaboomer" then
+                        v.ability.chip_mod = v.ability.chip_mod + v.ability.increase
+                        card_eval_status_text(v, 'extra', nil, nil, nil, {message = "+" .. v.ability.chip_mod})
                     end
                 end
 
@@ -63,7 +66,7 @@ SMODS.Joker {
     soul_pos = { x = 0, y = 1 },
     rarity = 4,
     cost = 20,
-    config = {x_mult = 10, increase = 1},
+    config = {x_mult = 1, increase = 1},
     loc_vars = function(self, info_queue, card)
         return {vars = {card.ability.increase, card.ability.x_mult}}
     end
@@ -74,12 +77,25 @@ SMODS.Joker {
     loc_txt = {
         name = "Blue Kaboomer",
         text = {
-            "TODO"
+            "Gains {C:chips}+#1#{} chips",
+            "for every {C:red}Flaming{} card destroyed!",
+            "{C:inactive}(Currently {C:chips}+#2#{}){}"
         },
     },
     pos = { x = 0, y = 0 },
     atlas = "kaboomers_jokers",
     soul_pos = { x = 1, y = 1 },
     rarity = 3,
-    cost = 14
+    cost = 14,
+    config = {increase = 50, chip_mod = 0},
+    loc_vars = function(self, info_queue, card)
+        return {vars = {card.ability.increase, card.ability.chip_mod}}
+    end,
+    calculate = function(self, card, context)
+        if context.joker_main then
+            return {
+                chips = card.ability.chip_mod
+            }
+        end
+    end
 }
