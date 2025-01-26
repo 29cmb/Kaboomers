@@ -51,10 +51,10 @@ SMODS.Enhancement {
 SMODS.Joker {
     key = "kaboomer",
     loc_txt = {
-        name = "Kaboomer",
+        name = "Red Kaboomer",
         text = {
             "Gains {X:mult,C:white}X#1#{} mult",
-            "for every {C:red}Fire{} card destroyed!",
+            "for every {C:red}Flaming{} card destroyed!",
             "{C:inactive}(Currently {X:mult,C:white}X#2#{}){}"
         },
     },
@@ -67,4 +67,19 @@ SMODS.Joker {
     loc_vars = function(self, info_queue, card)
         return {vars = {card.ability.increase, card.ability.x_mult}}
     end
+}
+
+SMODS.Joker {
+    key = "blue_kaboomer",
+    loc_txt = {
+        name = "Blue Kaboomer",
+        text = {
+            "TODO"
+        },
+    },
+    pos = { x = 0, y = 0 },
+    atlas = "kaboomers_jokers",
+    soul_pos = { x = 1, y = 1 },
+    rarity = 3,
+    cost = 14
 }

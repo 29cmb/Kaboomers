@@ -2,5 +2,11 @@
     "conventionalCommits.scopes": [
         "jokers",
         "enhancement"
+    ],
+    "Lua.diagnostics.globals": [
+        "SMODS",
+        "card_eval_status_text",
+        "pseudorandom",
+        "G"
     ]
 }
