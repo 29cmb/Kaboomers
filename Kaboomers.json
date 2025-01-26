@@ -1,0 +1,16 @@
+{
+	"id": "kaboomers",
+	"name": "Kaboomers",
+	"display_name": "Kaboomers",
+	"author": ["DevCmb", "Nibbl_z"],
+	"description": "Adds a little bit of everything",
+	"prefix": "kb",
+	"main_file": "main.lua",
+	"priority": 1000,
+	"badge_colour": "",
+	"badge_text_colour": "",
+	"version": "0.0.1",
+	"dependencies": [
+		"Steamodded (>=1.0.0~ALPHA-1304a)"
+	]
+}
