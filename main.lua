@@ -38,6 +38,9 @@ SMODS.Enhancement {
                     elseif v.label == "j_kb_blue_kaboomer" then
                         v.ability.chip_mod = v.ability.chip_mod + v.ability.increase
                         card_eval_status_text(v, 'extra', nil, nil, nil, {message = "+" .. v.ability.chip_mod})
+                    elseif v.label == "j_kb_yellow_kaboomer" then
+                        v.ability.money = v.ability.money + v.ability.increase
+                        card_eval_status_text(v, 'extra', nil, nil, nil, {message = "$" .. v.ability.money})
                     end
                 end
 
@@ -58,14 +61,14 @@ SMODS.Joker {
         text = {
             "Gains {X:mult,C:white}X#1#{} mult",
             "for every {C:red}Flaming{} card destroyed!",
-            "{C:inactive}(Currently {X:mult,C:white}X#2#{}){}"
+            "{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive}){}"
         },
     },
     pos = { x = 0, y = 0 },
     atlas = "kaboomers_jokers",
     soul_pos = { x = 0, y = 1 },
     rarity = 4,
-    cost = 20,
+    cost = 36,
     config = {x_mult = 1, increase = 1},
     loc_vars = function(self, info_queue, card)
         return {vars = {card.ability.increase, card.ability.x_mult}}
@@ -79,14 +82,14 @@ SMODS.Joker {
         text = {
             "Gains {C:chips}+#1#{} chips",
             "for every {C:red}Flaming{} card destroyed!",
-            "{C:inactive}(Currently {C:chips}+#2#{}){}"
+            "{C:inactive}(Currently {C:chips}+#2#{C:inactive}){}"
         },
     },
     pos = { x = 0, y = 0 },
     atlas = "kaboomers_jokers",
     soul_pos = { x = 1, y = 1 },
     rarity = 3,
-    cost = 14,
+    cost = 9,
     config = {increase = 50, chip_mod = 0},
     loc_vars = function(self, info_queue, card)
         return {vars = {card.ability.increase, card.ability.chip_mod}}
@@ -97,5 +100,30 @@ SMODS.Joker {
                 chips = card.ability.chip_mod
             }
         end
+    end
+}
+
+SMODS.Joker {
+    key = "yellow_kaboomer",
+    loc_txt = {
+        name = "Yellow Kaboomer",
+        text = {
+            "Gains {C:money}$#1#{} at the",
+            "end of each round for every",
+            "{C:red}Flaming{} card destroyed!",
+            "{C:inactive}(Currently {C:money}$#2#{C:inactive}){}"
+        },
+    },
+    pos = { x = 0, y = 0 },
+    atlas = "kaboomers_jokers",
+    soul_pos = { x = 2, y = 1 },
+    rarity = 2,
+    cost = 6,
+    config = {increase = 1, money = 0},
+    loc_vars = function(self, info_queue, card)
+        return {vars = {card.ability.increase, card.ability.money}}
+    end,
+    calc_dollar_bonus = function(self, card)
+        if card.ability.money > 0 then return card.ability.money end
     end
 }
