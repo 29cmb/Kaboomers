@@ -30,8 +30,8 @@ SMODS.Enhancement {
         end
         
         if context.destroying_card then 
-            if pseudorandom("kaboomers_fire_destroy", 1, 8) <= G.GAME.probabilities.normal/1 then 
-                card_eval_status_text(card, 'extra', nil, nil, nil, {message = "Extinct!"})
+            if pseudorandom("kaboomers_fire_destroy", 1, 8) <= G.GAME.probabilities.normal then 
+                card_eval_status_text(card, 'extra', nil, nil, nil, {message = "Burnt!"})
 
                 for _,v in pairs(G.jokers.cards) do 
                     if v.label == "j_kb_kaboomer" then 
@@ -49,8 +49,6 @@ SMODS.Enhancement {
                 return {
                     remove = true
                 }
-            else
-                card_eval_status_text(card, "extra", nil, nil, nil, {message = "Safe!"})
             end
         end
     end
@@ -62,7 +60,7 @@ SMODS.Joker {
         name = "Red Kaboomer",
         text = {
             "Gains {X:mult,C:white}X#1#{} mult",
-            "for every {C:red}Flaming{} card destroyed!",
+            "for every {C:red}Flaming{} card destroyed",
             "{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive}){}"
         },
     },
@@ -83,7 +81,7 @@ SMODS.Joker {
         name = "Blue Kaboomer",
         text = {
             "Gains {C:chips}+#1#{} chips",
-            "for every {C:red}Flaming{} card destroyed!",
+            "for every {C:red}Flaming{} card destroyed",
             "{C:inactive}(Currently {C:chips}+#2#{C:inactive}){}"
         },
     },
@@ -112,7 +110,7 @@ SMODS.Joker {
         text = {
             "Gains {C:money}$#1#{} at the",
             "end of each round for every",
-            "{C:red}Flaming{} card destroyed!",
+            "{C:red}Flaming{} card destroyed",
             "{C:inactive}(Currently {C:money}$#2#{C:inactive}){}"
         },
     },
@@ -127,5 +125,39 @@ SMODS.Joker {
     end,
     calc_dollar_bonus = function(self, card)
         if card.ability.money > 0 then return card.ability.money end
+    end
+}
+
+SMODS.Joker {
+    key = "green_kaboomer",
+    loc_txt = {
+        name = "Green Kaboomer",
+        text = {
+            "{C:green}#2# in #3#{} chance to",
+            "retrigger all {C:red}Flaming{}",
+            "cards {C:gold}#1#{} additional times"
+        },
+    },
+    pos = { x = 0, y = 0 },
+    atlas = "kaboomers_jokers",
+    soul_pos = { x = 3, y = 1 },
+    rarity = 2,
+    cost = 6,
+    config = {repetitions = 2, chance = 1, maxchance = 4},
+    loc_vars = function(self, info_queue, card)
+        return {vars = {card.ability.repetitions, G.GAME.probabilities.normal/card.ability.chance, card.ability.maxchance}}
+    end,
+    calculate = function(self, card, context)
+        if context.cardarea == G.play and context.repetition and not context.repetition_only then
+            if pseudorandom("kaboomers_green_retrigger", 1, 4) <= G.GAME.probabilities.normal then
+                card_eval_status_text(card, 'extra', nil, nil, nil, {message = "Again!"})
+                return {
+                    repetitions = card.ability.repetitions,
+                    card = context.other_card
+                }
+            else
+                card_eval_status_text(card, 'extra', nil, nil, nil, {message = "Nope!"})
+            end
+        end
     end
 }
