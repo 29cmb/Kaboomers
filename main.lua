@@ -14,8 +14,10 @@ SMODS.Enhancement {
         name = "Flaming",
         text = {
             "{C:mult}+#1#{} mult",
-            "Increases by {C:gold}#2#{} every time this card is played",
-            "{C:red}Has a 1/8 chance to destroy this card{}"
+            "Increases by {C:gold}#2#{} every",
+            "time this card is played",
+            "{C:red}Has a 1 in 8 chance{}",
+            "{C:red}to destroy this card{}"
         },
     },
     config = {mult = 5, increase = 1},
@@ -28,7 +30,7 @@ SMODS.Enhancement {
         end
         
         if context.destroying_card then 
-            if pseudorandom("kaboomers_fire_destroy", 1, 8) == 1 then 
+            if pseudorandom("kaboomers_fire_destroy", 1, 8) <= G.GAME.probabilities.normal/1 then 
                 card_eval_status_text(card, 'extra', nil, nil, nil, {message = "Extinct!"})
 
                 for _,v in pairs(G.jokers.cards) do 
