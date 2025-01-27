@@ -8,18 +8,37 @@ SMODS.Atlas {
     }
 }
 
+SMODS.Atlas {
+    key = "kaboomers_tarots",
+    px = 63,
+    py = 93,
+    path = {
+        ['default'] = "t_kaboomers_atlas.png"
+    }
+}
+
+SMODS.Atlas {
+    key = "kaboomers_enhancements",
+    px = 69,
+    py = 93,
+    path = {
+        ['default'] = "e_kaboomers_atlas.png"
+    }
+}
+
 SMODS.Enhancement {
     key = "flaming",
     loc_txt = {
         name = "Flaming",
         text = {
             "{C:mult}+#1#{} mult",
-            "Increases by {C:gold}#2#{} every",
+            "Increases by {C:mult}+#2#{} mult every",
             "time this card is played",
             "{C:red}Has a 1 in 8 chance{}",
             "{C:red}to destroy this card{}"
         },
     },
+    atlas = "kaboomers_enhancements",
     config = {mult = 5, increase = 1},
     loc_vars = function(self, info_queue, card)
         return {vars = {card.ability.mult, card.ability.increase}}
@@ -65,6 +84,7 @@ SMODS.Consumable {
             "{C:red}Flaming Cards{}"
         },
     },
+    atlas = "kaboomers_tarots",
     config = {count = 2},
     loc_vars = function(self, info_queue, card)
         return {vars = {card.ability.count}}
