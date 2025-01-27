@@ -2,7 +2,8 @@
     "conventionalCommits.scopes": [
         "jokers",
         "enhancement",
-        "consumable"
+        "consumable",
+        "challenge"
     ],
     "Lua.diagnostics.globals": [
         "SMODS",

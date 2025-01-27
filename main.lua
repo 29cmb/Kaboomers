@@ -26,6 +26,7 @@ SMODS.Atlas {
     }
 }
 
+-- Enhancements
 SMODS.Enhancement {
     key = "flaming",
     loc_txt = {
@@ -73,6 +74,7 @@ SMODS.Enhancement {
     end
 }
 
+-- Consumable
 SMODS.Consumable {
     key = "explosive",
     set = "Tarot",
@@ -120,6 +122,7 @@ SMODS.Consumable {
     end
 }
 
+-- Jokers
 SMODS.Joker {
     key = "kaboomer",
     loc_txt = {
@@ -226,4 +229,48 @@ SMODS.Joker {
             end
         end
     end
+}
+
+-- Challenges
+SMODS.Challenge {
+    key = "kabooming",
+    loc_txt = {
+        name = "Kabooming",
+    },
+    rules = {
+        modifiers = {
+            {
+                id = "joker_slots", 
+                value = 2
+            }
+        }
+    },
+    jokers = {
+        {
+            id = "j_kb_kaboomer"
+        }
+    },
+    restrictions = {
+        banned_cards = {
+            {
+                id = "j_kb_blue_kaboomer"
+            },
+            {
+                id = "j_kb_yellow_kaboomer"
+            },
+            {
+                id = "j_kb_green_kaboomer"
+            }
+        }
+    }
+}
+
+SMODS.Challenge {
+    key = "burnt",
+    loc_txt = {
+        name = "Burnt",
+    },
+    deck = {
+        enhancement = "m_kb_flaming"
+    }
 }
