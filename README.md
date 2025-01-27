@@ -12,7 +12,7 @@ A balatro mod that introduces the `Flaming` card type and 4 new jokers (and some
 ---
 ![The 4 new jokers](https://github.com/29cmb/Kaboomers/blob/main/docs/Jokers.png?raw=true)
 ## Jokers!
-In this mod, there are 4 new jokers based off of the Kaboomer character from [this roblox game I made](https://www.roblox.com/games/13146174045/Kaboom-Kompetition?raw=true), each one of them interfaces with the new Flammable card type in some way
+In this mod, there are 4 new jokers based off of the Kaboomer character from [this roblox game I made](https://www.roblox.com/games/13146174045/Kaboom-Kompetition), each one of them interfaces with the new Flammable card type in some way
 
 ### Red Kaboomer
 ![Red Kaboomer](https://github.com/29cmb/Kaboomers/blob/main/docs/red.png?raw=true)
