@@ -112,7 +112,7 @@ SMODS.Consumable {
                 G.hand.highlighted[i]:flip()
                 play_sound('tarot2', percent, 0.6)
                 G.hand.highlighted[i]:juice_up(0.3, 0.3)
-                return true 
+                return true
             end}))
         end
         G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2,func = function() G.hand:unhighlight_all(); return true end }))
