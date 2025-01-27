@@ -9,6 +9,8 @@
         "card_eval_status_text",
         "pseudorandom",
         "G",
-        "Event"
+        "Event",
+        "delay",
+        "play_sound"
     ]
 }
