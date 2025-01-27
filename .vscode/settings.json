@@ -3,7 +3,8 @@
         "jokers",
         "enhancement",
         "consumable",
-        "challenge"
+        "challenge",
+        "voucher"
     ],
     "Lua.diagnostics.globals": [
         "SMODS",

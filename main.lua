@@ -26,6 +26,15 @@ SMODS.Atlas {
     }
 }
 
+SMODS.Atlas {
+    key = "kaboomers_vouchers",
+    px = 71,
+    py = 93,
+    path = {
+        ['default'] = "v_kaboomers_atlas.png"
+    }
+}
+
 -- Enhancements
 SMODS.Enhancement {
     key = "flaming",
@@ -35,14 +44,15 @@ SMODS.Enhancement {
             "{C:mult}+#1#{} mult",
             "Increases by {C:mult}+#2#{} mult every",
             "time this card is played",
-            "{C:red}Has a 1 in 8 chance{}",
+            "{C:red}Has a #3# in #4# chance{}",
             "{C:red}to destroy this card{}"
         },
     },
     atlas = "kaboomers_enhancements",
     config = {mult = 5, increase = 1},
     loc_vars = function(self, info_queue, card)
-        return {vars = {card.ability.mult, card.ability.increase}}
+        local max = (G.GAME.used_vouchers["v_kb_gasoline"] and 16) or (G.GAME.used_vouchers["v_kb_fire_extinguisher"] and 4) or 8
+        return {vars = {card.ability.mult, card.ability.increase, G.GAME.probabilities.normal, max}}
     end,
     calculate = function(self, card, context)
         if context.cardarea == G.play and context.main_scoring then 
@@ -50,7 +60,8 @@ SMODS.Enhancement {
         end
         
         if context.destroying_card then 
-            if pseudorandom("kaboomers_fire_destroy", 1, 8) <= G.GAME.probabilities.normal then 
+            local max = (G.GAME.used_vouchers["v_kb_gasoline"] and 16) or (G.GAME.used_vouchers["v_kb_fire_extinguisher"] and 4) or 8
+            if pseudorandom("kaboomers_fire_destroy", 1, max) <= G.GAME.probabilities.normal then 
                 card_eval_status_text(card, 'extra', nil, nil, nil, {message = "Burnt!"})
 
                 for _,v in pairs(G.jokers.cards) do 
@@ -273,4 +284,66 @@ SMODS.Challenge {
     deck = {
         enhancement = "m_kb_flaming"
     }
+}
+
+
+-- Vouchers
+SMODS.Voucher {
+    key = "gasoline",
+    atlas = "kaboomers_vouchers",
+    pos = { x = 0, y = 0 },
+    loc_txt = {
+        name = "Gasoline",
+        text = {
+            "Cuts the chance of",
+            "{C:red}Flaming Cards{} being",
+            "destroyed in {C:green}half{}"
+        },
+    },
+    in_pool = function(self, args)
+        return not G.GAME.used_vouchers["v_kb_fire_extinguisher"]
+    end
+}
+
+SMODS.Voucher {
+    key = "fire_extinguisher",
+    atlas = "kaboomers_vouchers",
+    pos = { x = 1, y = 0 },
+    loc_txt = {
+        name = "Fire Extinguisher",
+        text = {
+            "{C:green}Doubles{} the chance",
+            "of {C:red}Flaming Cards{} to be",
+            "destroyed."
+        },
+    },
+    in_pool = function(self, args)
+        return not G.GAME.used_vouchers["v_kb_gasoline"]
+    end
+}
+
+-- Decks
+SMODS.Back {
+    key = "flammable",
+    loc_txt = {
+        name = "Flammable",
+        text = {
+            "Cards have a {C:green}1 in 4{}",
+            "chance to be",
+            "{C:red}Flaming{}"
+        }
+    },
+    atlas = "kaboomers_jokers", -- yes, we're using the joker base image
+    apply = function(self)
+        G.E_MANAGER:add_event(Event({
+            func = function()
+                for _, card in ipairs(G.playing_cards) do
+                    if pseudorandom("kaboomers_flammable_deck", 1, 4) <= 1 then 
+                        card:set_ability(G.P_CENTERS["m_kb_flaming"])
+                    end
+                end
+                return true
+            end
+        }))
+    end
 }
